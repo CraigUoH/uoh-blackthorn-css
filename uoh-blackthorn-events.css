@@ -1,26 +1,27 @@
 /* ==========================================================================
-   University of Hull — Blackthorn Events custom CSS  (responsive)
+   University of Hull — Blackthorn Events Custom CSS
    --------------------------------------------------------------------------
-   Brand:  University of Hull Brand Identity Guidelines (April 2024, v1.1)
-   Target: Blackthorn Events public event / registration pages
-   Look:   "Core" — white canvas, Ink Blue text, Chartreuse + Mid Blue accents
+   Brand:  UoH Brand Identity Guidelines (April 2024, v1.1)
+   Target: Blackthorn Events Dynamic UI
    --------------------------------------------------------------------------
-   Selectors verified against live Blackthorn Angular/Material markup.
+   IMPORTANT NOTES:
+   - This CSS targets the Dynamic UI only (BYO-CSS is deprecated).
+   - Set Event Settings Background Color = 0E1647, Primary Color = 1D4CF2.
+     Those fields directly control sections of Dynamic UI independently of
+     this stylesheet and must align with the brand palette.
+   - Blackthorn's Dynamic UI is an Angular Material app. Angular Material
+     uses very high-specificity selectors, so !important is required
+     throughout to win the cascade.
+   - Selectors verified via browser inspector on live Dynamic UI event page.
    ========================================================================== */
 
 /* ---- 1. Brand tokens ---------------------------------------------------- */
 :root {
-  --uoh-ink-blue:    #0E1647;
-  --uoh-mid-blue:    #1D4CF2;
-  --uoh-light-blue:  #82DAF4;
-  --uoh-chartreuse:  #D7F777;
-  --uoh-white:       #FFFFFF;
-
-  --uoh-light-pink:   #F5B6DC;
-  --uoh-light-aqua:   #7AE3CA;
-  --uoh-light-orange: #FFC77A;
-  --uoh-light-purple: #A8A4EE;
-  --uoh-gold:         #B3A68C;
+  --uoh-ink-blue:      #0E1647;
+  --uoh-mid-blue:      #1D4CF2;
+  --uoh-light-blue:    #82DAF4;
+  --uoh-chartreuse:    #D7F777;
+  --uoh-white:         #FFFFFF;
 
   --uoh-ink-blue-10:   #E7E8EE;
   --uoh-light-blue-10: #EFFAFE;
@@ -30,15 +31,15 @@
   --uoh-font-hero: "Signifier", "Aptos Serif", Georgia, "Times New Roman", serif;
   --uoh-font-body: "Suisse Int'l", "Suisse Intl", "Aptos", "Helvetica Neue", Arial, sans-serif;
 
-  --uoh-radius: 6px;
+  --uoh-radius:    6px;
   --uoh-radius-lg: 10px;
 }
 
-/* ---- 1a. Optional licensed webfonts (uncomment if licensed) ------------- */
+/* ---- 1a. Licensed webfonts — uncomment if UoH hosts the woff2 files ---- */
 /*
-@font-face { font-family:"Signifier";    src:url("Signifier-Medium.woff2") format("woff2"); font-weight:500; font-style:normal; font-display:swap; }
-@font-face { font-family:"Suisse Int'l";  src:url("SuisseIntl-Book.woff2") format("woff2");  font-weight:400; font-style:normal; font-display:swap; }
-@font-face { font-family:"Suisse Int'l";  src:url("SuisseIntl-Bold.woff2") format("woff2");  font-weight:700; font-style:normal; font-display:swap; }
+@font-face { font-family:"Signifier";   src:url("Signifier-Medium.woff2") format("woff2"); font-weight:500; font-style:normal; font-display:swap; }
+@font-face { font-family:"Suisse Int'l"; src:url("SuisseIntl-Book.woff2") format("woff2");  font-weight:400; font-style:normal; font-display:swap; }
+@font-face { font-family:"Suisse Int'l"; src:url("SuisseIntl-Bold.woff2") format("woff2");  font-weight:700; font-style:normal; font-display:swap; }
 */
 
 /* ---- 2. Page base ------------------------------------------------------- */
@@ -46,67 +47,68 @@ body {
   background-color: var(--uoh-white) !important;
   color: var(--uoh-ink-blue) !important;
   font-family: var(--uoh-font-body) !important;
-  line-height: 1.5;
+  line-height: 1.5 !important;
   -webkit-text-size-adjust: 100%;
   -webkit-font-smoothing: antialiased;
 }
 
-/* ---- 3. Typography — verified selectors --------------------------------- */
-
-/* Event title: Blackthorn uses div.event-name > bt-rich-text > div.content  */
+/* ---- 3. Event title ---------------------------------------------------- */
+/* Verified: title lives in div.event-name > bt-rich-text > div.content
+   Blackthorn sets overflow:hidden + text-overflow:ellipsis on div.content
+   which clips long titles — override those too.                           */
 div.event-name,
 div.event-name bt-rich-text,
 div.event-name div.content {
   font-family: var(--uoh-font-hero) !important;
   color: var(--uoh-ink-blue) !important;
   font-weight: 500 !important;
-  letter-spacing: -0.01em !important;
-  line-height: 1.1 !important;
   font-size: clamp(1.6rem, 4vw, 2.2rem) !important;
+  line-height: 1.15 !important;
+  letter-spacing: -0.01em !important;
   overflow: visible !important;
   text-overflow: unset !important;
   white-space: normal !important;
+  -webkit-line-clamp: unset !important;
 }
 
-/* Section headings */
-h1, h2, h3, h4 {
+/* ---- 4. General typography --------------------------------------------- */
+h1, h2, h3, h4, h5, h6 {
   font-family: var(--uoh-font-hero) !important;
   color: var(--uoh-ink-blue) !important;
-  font-weight: 500;
-  letter-spacing: -0.01em;
-  line-height: 1.1;
+  font-weight: 500 !important;
+  line-height: 1.15 !important;
+  letter-spacing: -0.01em !important;
 }
 
-p, li, label {
+p, li, span, div {
   font-family: var(--uoh-font-body) !important;
+}
+
+a {
+  color: var(--uoh-mid-blue) !important;
+  text-decoration: underline !important;
+  text-underline-offset: 2px !important;
+}
+a:hover {
   color: var(--uoh-ink-blue) !important;
-  font-size: clamp(0.95rem, 2.4vw, 1rem);
 }
 
-a { color: var(--uoh-mid-blue) !important; text-decoration: underline; text-underline-offset: 2px; }
-a:hover { color: var(--uoh-ink-blue) !important; }
-
-/* ---- 4. Hero / overview area — verified selectors ----------------------- */
-
-/* Outer overview container */
-div#overview.overview,
-div.overview {
-  background-color: var(--uoh-white) !important;
-}
-
-/* The card holding title, date, price, button */
+/* ---- 5. Hero / name container ------------------------------------------ */
+/* Verified: the card holding title + date + price + CTA = div.name-container
+   Parent overview wrapper = div#overview.overview                         */
 div.name-container {
   background-color: var(--uoh-chartreuse) !important;
   border-radius: var(--uoh-radius-lg) !important;
   padding: clamp(1.25rem, 3vw, 2rem) !important;
 }
 
-/* Date/time line — confirmed class: start-dates */
+/* Date/time — verified class: div.start-dates */
 div.start-dates,
 .start-dates {
   color: var(--uoh-mid-blue) !important;
   font-weight: 700 !important;
   font-family: var(--uoh-font-body) !important;
+  font-size: 0.9rem !important;
 }
 
 /* Price */
@@ -117,176 +119,260 @@ div.starting-price {
   font-weight: 700 !important;
 }
 
-/* ---- 5. Buttons — Angular Material overrides ---------------------------- */
+/* ---- 6. Navigation bar -------------------------------------------------- */
+/* Dynamic UI top nav tabs */
+.mat-tab-label,
+.mat-tab-link {
+  font-family: var(--uoh-font-body) !important;
+  color: var(--uoh-ink-blue) !important;
+  font-weight: 700 !important;
+  opacity: 1 !important;
+}
+.mat-tab-label-active,
+.mat-tab-link-active {
+  color: var(--uoh-mid-blue) !important;
+}
+.mat-ink-bar {
+  background-color: var(--uoh-mid-blue) !important;
+  height: 3px !important;
+}
+.mat-tab-header,
+.mat-tab-nav-bar {
+  border-bottom-color: var(--uoh-ink-blue-10) !important;
+}
 
-/* get-tickets-button confirmed present on the Register button.
-   Angular Material uses mat-raised-button which is very specific,
-   so we target the confirmed classes directly with !important.            */
+/* ---- 7. Register / CTA button ------------------------------------------ */
+/* Verified classes on button: mat-focus-indicator button get-tickets-button
+   mat-raised-button mat-button-base ng-star-inserted
+   Angular Material mat-raised-button uses background via inline style AND
+   its own stylesheet — must override both with !important.               */
 button.get-tickets-button,
 button.get-tickets-button.mat-raised-button,
-button.get-tickets-button.mat-button-base {
+button.get-tickets-button.mat-button-base,
+a.get-tickets-button {
   background-color: var(--uoh-mid-blue) !important;
   color: var(--uoh-white) !important;
   font-family: var(--uoh-font-body) !important;
   font-weight: 700 !important;
+  font-size: 0.95rem !important;
+  letter-spacing: 0.03em !important;
   border-radius: var(--uoh-radius) !important;
-  border: 2px solid transparent !important;
-  padding: 0.7rem 1.6rem !important;
-  line-height: 1.2 !important;
+  border: none !important;
   box-shadow: none !important;
-  letter-spacing: 0.01em !important;
-  transition: background-color .15s ease !important;
+  padding: 0 1.6rem !important;
+  height: 44px !important;
+  line-height: 44px !important;
+  transition: background-color 0.15s ease !important;
 }
 button.get-tickets-button:hover,
 button.get-tickets-button.mat-raised-button:hover {
   background-color: var(--uoh-ink-blue) !important;
   color: var(--uoh-white) !important;
+  box-shadow: none !important;
 }
 
-/* Generic Material buttons — secondary style */
-.mat-button,
-.mat-stroked-button {
-  font-family: var(--uoh-font-body) !important;
-  color: var(--uoh-ink-blue) !important;
-  border-color: var(--uoh-ink-blue) !important;
-  border-radius: var(--uoh-radius) !important;
+/* Ripple effect — tone down to brand colour */
+button.get-tickets-button .mat-ripple-element {
+  background-color: rgba(255, 255, 255, 0.2) !important;
 }
 
-/* ---- 5a. MOBILE sticky register bar ------------------------------------ */
+/* ---- 7a. Mobile sticky CTA bar ----------------------------------------- */
 .mobile-registration-action-container,
 .mobile-registration-action-container.ng-star-inserted {
   background-color: var(--uoh-white) !important;
   border-top: 1px solid var(--uoh-ink-blue-10) !important;
   box-shadow: 0 -2px 10px rgba(14, 22, 71, 0.08) !important;
-  padding: 0.6rem 1rem calc(0.6rem + env(safe-area-inset-bottom)) 1rem !important;
+  padding: 0.6rem 1rem calc(0.6rem + env(safe-area-inset-bottom)) !important;
 }
 .mobile-registration-action-container button.get-tickets-button {
   width: 100% !important;
   min-height: 48px !important;
-  background-color: var(--uoh-mid-blue) !important;
-  color: var(--uoh-white) !important;
-}
-.mobile-registration-action-container button.get-tickets-button:hover {
-  background-color: var(--uoh-ink-blue) !important;
+  height: auto !important;
+  line-height: 1.2 !important;
+  padding: 0.85rem 1.2rem !important;
 }
 
-/* ---- 6. Form fields ----------------------------------------------------- */
-input[type="text"], input[type="email"], input[type="tel"],
-input[type="number"], input[type="password"],
-select, textarea,
-.mat-input-element {
+/* ---- 8. Generic Material buttons --------------------------------------- */
+/* Secondary / outline buttons (Back, Cancel, etc.) */
+.mat-stroked-button,
+.mat-button {
   font-family: var(--uoh-font-body) !important;
   color: var(--uoh-ink-blue) !important;
-  background-color: var(--uoh-white) !important;
-  border: 1.5px solid var(--uoh-ink-blue) !important;
+  border-color: var(--uoh-ink-blue) !important;
   border-radius: var(--uoh-radius) !important;
-  padding: 0.6rem 0.8rem !important;
-  font-size: 16px !important;
-  box-sizing: border-box;
 }
-input:focus, select:focus, textarea:focus, .mat-input-element:focus {
+.mat-stroked-button:hover,
+.mat-button:hover {
+  background-color: var(--uoh-light-blue-20) !important;
+}
+
+/* ---- 9. Form fields ---------------------------------------------------- */
+/* Angular Material form fields in Dynamic UI */
+.mat-form-field-appearance-outline .mat-form-field-outline {
+  color: var(--uoh-ink-blue) !important;
+}
+.mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-thick {
+  color: var(--uoh-mid-blue) !important;
+}
+.mat-form-field-appearance-legacy .mat-form-field-underline {
+  background-color: var(--uoh-ink-blue) !important;
+}
+.mat-form-field-appearance-legacy.mat-focused .mat-form-field-ripple {
+  background-color: var(--uoh-mid-blue) !important;
+}
+.mat-form-field-label,
+.mat-label {
+  color: var(--uoh-ink-blue) !important;
+  font-family: var(--uoh-font-body) !important;
+  font-weight: 700 !important;
+}
+.mat-input-element,
+input.mat-input-element {
+  color: var(--uoh-ink-blue) !important;
+  font-family: var(--uoh-font-body) !important;
+  font-size: 16px !important; /* 16px prevents iOS auto-zoom on focus */
+  caret-color: var(--uoh-mid-blue) !important;
+}
+.mat-select-value-text {
+  color: var(--uoh-ink-blue) !important;
+  font-family: var(--uoh-font-body) !important;
+}
+/* Focus ring on native inputs */
+input:focus,
+select:focus,
+textarea:focus {
   outline: none !important;
   border-color: var(--uoh-mid-blue) !important;
-  box-shadow: 0 0 0 3px rgba(29, 76, 242, 0.25) !important;
+  box-shadow: 0 0 0 3px rgba(29, 76, 242, 0.22) !important;
 }
-::placeholder { color: var(--uoh-ink-blue-55) !important; opacity: 1; }
-
-label, .mat-form-field-label {
-  font-weight: 700 !important;
-  color: var(--uoh-ink-blue) !important;
-  font-family: var(--uoh-font-body) !important;
+::placeholder {
+  color: var(--uoh-ink-blue-55) !important;
+  opacity: 1 !important;
 }
 
-/* Angular Material form field underline → replace with full border */
-.mat-form-field-appearance-legacy .mat-form-field-underline,
-.mat-form-field-underline {
-  background-color: var(--uoh-ink-blue) !important;
-}
-.mat-form-field-appearance-legacy .mat-form-field-ripple,
-.mat-form-field-ripple {
-  background-color: var(--uoh-mid-blue) !important;
-}
-
-/* ---- 7. Ticket / product / session cards -------------------------------- */
-.ticket, .ticket-card, .product,
+/* ---- 10. Cards / ticket panels ----------------------------------------- */
 .mat-card {
   background-color: var(--uoh-white) !important;
   border: 1.5px solid var(--uoh-ink-blue-10) !important;
   border-radius: var(--uoh-radius-lg) !important;
   box-shadow: none !important;
 }
-.ticket:hover, .ticket-card:hover, .mat-card:hover {
+.mat-card:hover {
   border-color: var(--uoh-mid-blue) !important;
-}
-.ticket.selected, .ticket-card.selected {
-  background-color: var(--uoh-light-blue-10) !important;
-  border-color: var(--uoh-mid-blue) !important;
-  border-left: 5px solid var(--uoh-chartreuse) !important;
 }
 
-/* ---- 8. Tables ---------------------------------------------------------- */
-table { border-collapse: collapse; width: 100%; }
+/* ---- 11. Stepper / progress -------------------------------------------- */
+.mat-step-header .mat-step-icon-selected,
+.mat-step-header .mat-step-icon-state-done,
+.mat-step-header .mat-step-icon-state-edit {
+  background-color: var(--uoh-mid-blue) !important;
+  color: var(--uoh-white) !important;
+}
+.mat-step-header .mat-step-icon {
+  background-color: var(--uoh-ink-blue-10) !important;
+  color: var(--uoh-ink-blue-55) !important;
+}
+.mat-stepper-horizontal-line {
+  border-top-color: var(--uoh-ink-blue-10) !important;
+}
+.mat-step-label {
+  font-family: var(--uoh-font-body) !important;
+  color: var(--uoh-ink-blue-55) !important;
+}
+.mat-step-label.mat-step-label-active {
+  color: var(--uoh-ink-blue) !important;
+  font-weight: 700 !important;
+}
+
+/* ---- 12. Checkbox + radio ---------------------------------------------- */
+.mat-checkbox-checked .mat-checkbox-background,
+.mat-checkbox-indeterminate .mat-checkbox-background {
+  background-color: var(--uoh-mid-blue) !important;
+}
+.mat-checkbox-frame {
+  border-color: var(--uoh-ink-blue) !important;
+}
+.mat-radio-button.mat-accent .mat-radio-inner-circle {
+  background-color: var(--uoh-mid-blue) !important;
+}
+.mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle {
+  border-color: var(--uoh-mid-blue) !important;
+}
+
+/* ---- 13. Tables --------------------------------------------------------- */
+table { border-collapse: collapse !important; width: 100% !important; }
 thead th, table th {
   background-color: var(--uoh-ink-blue) !important;
   color: var(--uoh-white) !important;
   font-family: var(--uoh-font-body) !important;
-  font-weight: 700; text-align: left;
-  border-right: 1px solid var(--uoh-white);
-  padding: 0.6rem 0.8rem;
+  font-weight: 700 !important;
+  text-align: left !important;
+  padding: 0.6rem 0.8rem !important;
+  border-right: 1px solid rgba(255,255,255,0.2) !important;
 }
 tbody td {
   color: var(--uoh-ink-blue) !important;
-  border-bottom: 1px solid var(--uoh-light-blue);
-  padding: 0.6rem 0.8rem;
+  font-family: var(--uoh-font-body) !important;
+  border-bottom: 1px solid var(--uoh-light-blue) !important;
+  padding: 0.6rem 0.8rem !important;
 }
-tbody tr:nth-child(even) td { background-color: var(--uoh-light-blue-10) !important; }
+tbody tr:nth-child(even) td {
+  background-color: var(--uoh-light-blue-10) !important;
+}
 
-/* ---- 9. Misc accents ---------------------------------------------------- */
-/* Angular Material progress/stepper */
-.mat-step-header .mat-step-icon-selected,
-.mat-step-header .mat-step-icon-state-done {
-  background-color: var(--uoh-mid-blue) !important;
+/* ---- 14. Snackbar / toast ---------------------------------------------- */
+.mat-snack-bar-container {
+  background-color: var(--uoh-ink-blue) !important;
   color: var(--uoh-white) !important;
-}
-.mat-progress-bar-fill::after {
-  background-color: var(--uoh-mid-blue) !important;
-}
-
-.badge, .tag {
-  background-color: var(--uoh-chartreuse) !important;
-  color: var(--uoh-ink-blue) !important;
-  border-radius: 999px; font-weight: 700; padding: 0.15rem 0.7rem;
+  font-family: var(--uoh-font-body) !important;
+  border-radius: var(--uoh-radius) !important;
 }
 
-/* Angular Material tab ink bar */
-.mat-ink-bar {
-  background-color: var(--uoh-mid-blue) !important;
-}
-.mat-tab-label-active {
-  color: var(--uoh-mid-blue) !important;
-  font-weight: 700 !important;
+/* ---- 15. Tooltip -------------------------------------------------------- */
+.mat-tooltip {
+  background-color: var(--uoh-ink-blue) !important;
+  font-family: var(--uoh-font-body) !important;
+  font-size: 0.8rem !important;
+  border-radius: var(--uoh-radius) !important;
 }
 
-/* ---- 10. MOBILE TUNING -------------------------------------------------- */
+/* ==========================================================================
+   16. MOBILE — matches Blackthorn's 600px breakpoint
+   ========================================================================== */
 @media (max-width: 600px) {
-
-  div.event-name div.content { font-size: 1.6rem !important; }
-
-  div.name-container { padding: 1.25rem !important; border-radius: 8px !important; }
-
-  .mat-card { width: 100% !important; }
-
-  button.get-tickets-button,
-  .mobile-registration-action-container button.get-tickets-button {
-    width: 100% !important;
-    min-height: 48px !important;
-    padding: 0.85rem 1.2rem !important;
+  div.event-name div.content {
+    font-size: 1.6rem !important;
   }
 
-  .table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
-  table th, table td { padding: 0.5rem 0.6rem; font-size: 0.9rem; }
+  div.name-container {
+    padding: 1.25rem !important;
+    border-radius: 8px !important;
+  }
+
+  /* Stack layout to single column */
+  .mat-card { width: 100% !important; }
+
+  button.get-tickets-button {
+    width: 100% !important;
+    min-height: 48px !important;
+    height: auto !important;
+    padding: 0.85rem 1.2rem !important;
+    line-height: 1.3 !important;
+  }
+
+  table th, table td {
+    padding: 0.5rem 0.6rem !important;
+    font-size: 0.875rem !important;
+  }
+  .table-scroll {
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
 }
 
+/* ---- Wide desktop refinement ------------------------------------------- */
 @media (min-width: 1024px) {
-  div.event-name div.content { letter-spacing: -0.015em !important; }
+  div.event-name div.content {
+    letter-spacing: -0.015em !important;
+  }
 }
