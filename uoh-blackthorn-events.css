@@ -5,47 +5,7 @@
    Target: Blackthorn Events public event / registration pages
    Look:   "Core" — white canvas, Ink Blue text, Chartreuse + Mid Blue accents
    --------------------------------------------------------------------------
-   CROSS-REFERENCED WITH BLACKTHORN DOCS
-   (https://docs.blackthorn.io/docs/custom-css-injection)
-
-   1. Responsive model. Blackthorn renders DIFFERENT markup above and below a
-      600px viewport width, so this file is built around that same breakpoint:
-        - Desktop / tablet landscape (> 600px): the primary CTA is
-          ".get-tickets-button".
-        - Phone / small tablet (< 600px): the primary CTA lives in
-          ".mobile-registration-action-container.ng-star-inserted"
-          (a sticky bottom action bar).
-      Both are branded below, plus a @media (max-width: 600px) block for
-      layout, type and tap-target tuning. Fluid clamp() typography also
-      scales smoothly across every width.
-
-   2. Injection. CSS is applied ADDITIVELY across three levels — Event,
-      Event Settings, and Event Group. Event Settings cascades to all linked
-      Events; Event Group cascades to the whole group. Where Blackthorn's own
-      styles are very specific, !important is used (the docs confirm
-      !important overrides platform styling for that element).
-
-   3. Hosting. Static Resources are NOT supported. Upload this as a Salesforce
-      File, click "Public Link", and paste that URL into the "Custom CSS Url"
-      field on the Event / Event Settings / Event Group record. The file must
-      be served with MIME type text/css.
-
-   4. Caching. If your org runs Caching 2.0, allow a short delay (or hard-
-      refresh) before changes appear on the live page.
-
-   SELECTORS
-   Names confirmed in the Blackthorn docs are treated as authoritative.
-   Names marked /* VERIFY */ are likely but vary by release/UI (Tabbed vs
-   Dynamic) — confirm via right-click > Inspect on your own event page.
-   To scope styling to ONE event, Blackthorn also exposes a per-record class,
-   e.g. ".page-event-<18charRecordId> h1.title { ... }".
-
-   FONTS
-   Signifier and Suisse Int'l are licensed and are NOT free web fonts, so the
-   stacks fall back to web-safe equivalents matching the brand's accessibility
-   intent (Signifier ~ serif/Times; Suisse ~ Helvetica). The docs confirm a
-   webfont can be imported and applied to body — if the University holds a
-   licence, uncomment the @font-face blocks and host the .woff2 files.
+   Selectors verified against live Blackthorn Angular/Material markup.
    ========================================================================== */
 
 /* ---- 1. Brand tokens ---------------------------------------------------- */
@@ -60,12 +20,12 @@
   --uoh-light-aqua:   #7AE3CA;
   --uoh-light-orange: #FFC77A;
   --uoh-light-purple: #A8A4EE;
-  --uoh-gold:         #B3A68C;   /* ceremonial — not used on event pages */
+  --uoh-gold:         #B3A68C;
 
   --uoh-ink-blue-10:   #E7E8EE;
   --uoh-light-blue-10: #EFFAFE;
   --uoh-light-blue-20: #E0F5FC;
-  --uoh-ink-blue-55:   #6A6F8C;  /* AA-safe muted / placeholder text */
+  --uoh-ink-blue-55:   #6A6F8C;
 
   --uoh-font-hero: "Signifier", "Aptos Serif", Georgia, "Times New Roman", serif;
   --uoh-font-body: "Suisse Int'l", "Suisse Intl", "Aptos", "Helvetica Neue", Arial, sans-serif;
@@ -81,45 +41,43 @@
 @font-face { font-family:"Suisse Int'l";  src:url("SuisseIntl-Bold.woff2") format("woff2");  font-weight:700; font-style:normal; font-display:swap; }
 */
 
-/* ---- 2. Page base + responsive container -------------------------------- */
-body,
-.page-event-details {                         /* page container (docs) */
+/* ---- 2. Page base ------------------------------------------------------- */
+body {
   background-color: var(--uoh-white) !important;
   color: var(--uoh-ink-blue) !important;
   font-family: var(--uoh-font-body) !important;
   line-height: 1.5;
-  -webkit-text-size-adjust: 100%;             /* stop iOS auto-zooming text */
+  -webkit-text-size-adjust: 100%;
   -webkit-font-smoothing: antialiased;
 }
 
-/* Comfortable reading width on large screens, full-bleed on small.
-   Apply to whichever wrapper holds the event body in your org.            */
-.event-content,                               /* VERIFY */
-.container,                                   /* VERIFY */
-.page-event-details .content {                /* VERIFY */
-  max-width: 920px;
-  margin-left: auto;
-  margin-right: auto;
-  padding-left: clamp(1rem, 4vw, 2rem);
-  padding-right: clamp(1rem, 4vw, 2rem);
-  box-sizing: border-box;
+/* ---- 3. Typography — verified selectors --------------------------------- */
+
+/* Event title: Blackthorn uses div.event-name > bt-rich-text > div.content  */
+div.event-name,
+div.event-name bt-rich-text,
+div.event-name div.content {
+  font-family: var(--uoh-font-hero) !important;
+  color: var(--uoh-ink-blue) !important;
+  font-weight: 500 !important;
+  letter-spacing: -0.01em !important;
+  line-height: 1.1 !important;
+  font-size: clamp(1.6rem, 4vw, 2.2rem) !important;
+  overflow: visible !important;
+  text-overflow: unset !important;
+  white-space: normal !important;
 }
 
-/* ---- 3. Typography (fluid — scales desktop -> mobile automatically) ----- */
-h1, h2, h3, h4,
-.title, h1.title {                            /* event title (docs) */
+/* Section headings */
+h1, h2, h3, h4 {
   font-family: var(--uoh-font-hero) !important;
   color: var(--uoh-ink-blue) !important;
   font-weight: 500;
   letter-spacing: -0.01em;
-  line-height: 1.1;                            /* brand 110% headline leading */
+  line-height: 1.1;
 }
-h1, h1.title { font-size: clamp(1.9rem, 5vw, 2.75rem); margin-bottom: 0.5rem; }
-h2 { font-size: clamp(1.4rem, 3.5vw, 1.85rem); }
-h3 { font-size: clamp(1.1rem, 2.5vw, 1.3rem); }
 
-p, li, label,
-.event-description {                          /* VERIFY */
+p, li, label {
   font-family: var(--uoh-font-body) !important;
   color: var(--uoh-ink-blue) !important;
   font-size: clamp(0.95rem, 2.4vw, 1rem);
@@ -128,79 +86,73 @@ p, li, label,
 a { color: var(--uoh-mid-blue) !important; text-decoration: underline; text-underline-offset: 2px; }
 a:hover { color: var(--uoh-ink-blue) !important; }
 
-/* ---- 4. Hero / event header band --------------------------------------- */
-/* High-intensity "Core" look: Chartreuse canvas + Ink Blue headline
-   (an AA-approved brand combination).                                      */
-.event-header,                                /* VERIFY */
-.page-header {                                /* VERIFY */
+/* ---- 4. Hero / overview area — verified selectors ----------------------- */
+
+/* Outer overview container */
+div#overview.overview,
+div.overview {
+  background-color: var(--uoh-white) !important;
+}
+
+/* The card holding title, date, price, button */
+div.name-container {
   background-color: var(--uoh-chartreuse) !important;
-  color: var(--uoh-ink-blue) !important;
-  padding: clamp(1.5rem, 4vw, 3rem) clamp(1.25rem, 4vw, 2rem);
-  border-radius: var(--uoh-radius-lg);
+  border-radius: var(--uoh-radius-lg) !important;
+  padding: clamp(1.25rem, 3vw, 2rem) !important;
 }
-.event-header h1, .page-header h1,
-.event-header .title, .page-header .title { color: var(--uoh-ink-blue) !important; }
 
-.start-dates, #date-and-time {               /* date / time line (docs) */
+/* Date/time line — confirmed class: start-dates */
+div.start-dates,
+.start-dates {
   color: var(--uoh-mid-blue) !important;
-  font-weight: 700;
+  font-weight: 700 !important;
+  font-family: var(--uoh-font-body) !important;
 }
 
-/* ---- 5. Buttons --------------------------------------------------------- */
-/* Shared button shape */
-.btn, button,
-.btn-primary,                                 /* VERIFY */
-.get-tickets-button,                          /* desktop CTA > 600px (docs) */
-input[type="submit"] {
+/* Price */
+div.price,
+div.starting-price {
+  color: var(--uoh-ink-blue) !important;
   font-family: var(--uoh-font-body) !important;
-  font-weight: 700;
+  font-weight: 700 !important;
+}
+
+/* ---- 5. Buttons — Angular Material overrides ---------------------------- */
+
+/* get-tickets-button confirmed present on the Register button.
+   Angular Material uses mat-raised-button which is very specific,
+   so we target the confirmed classes directly with !important.            */
+button.get-tickets-button,
+button.get-tickets-button.mat-raised-button,
+button.get-tickets-button.mat-button-base {
+  background-color: var(--uoh-mid-blue) !important;
+  color: var(--uoh-white) !important;
+  font-family: var(--uoh-font-body) !important;
+  font-weight: 700 !important;
   border-radius: var(--uoh-radius) !important;
   border: 2px solid transparent !important;
   padding: 0.7rem 1.6rem !important;
-  line-height: 1.2;
-  transition: background-color .15s ease, border-color .15s ease, color .15s ease;
+  line-height: 1.2 !important;
+  box-shadow: none !important;
+  letter-spacing: 0.01em !important;
+  transition: background-color .15s ease !important;
 }
-
-/* Primary CTA — desktop button + generic primary. Mid Blue + white = AA. */
-.btn-primary,
-button.primary,
-.get-tickets-button,                          /* desktop register/get tickets */
-input[type="submit"] {
-  background-color: var(--uoh-mid-blue) !important;
-  color: var(--uoh-white) !important;
-}
-.btn-primary:hover,
-button.primary:hover,
-.get-tickets-button:hover,
-input[type="submit"]:hover {
+button.get-tickets-button:hover,
+button.get-tickets-button.mat-raised-button:hover {
   background-color: var(--uoh-ink-blue) !important;
   color: var(--uoh-white) !important;
 }
 
-/* Secondary / outline (Back, Cancel, Add another) */
-.btn-default,                                 /* VERIFY */
-.btn-secondary, button.secondary {
-  background-color: var(--uoh-white) !important;
+/* Generic Material buttons — secondary style */
+.mat-button,
+.mat-stroked-button {
+  font-family: var(--uoh-font-body) !important;
   color: var(--uoh-ink-blue) !important;
-  border: 2px solid var(--uoh-ink-blue) !important;
-}
-.btn-default:hover, .btn-secondary:hover, button.secondary:hover {
-  background-color: var(--uoh-light-blue-20) !important;
+  border-color: var(--uoh-ink-blue) !important;
+  border-radius: var(--uoh-radius) !important;
 }
 
-/* Share button (docs reference its colour) */
-.share, .btn-share {                          /* VERIFY exact class */
-  background-color: transparent !important;
-  color: var(--uoh-mid-blue) !important;
-  border: 2px solid var(--uoh-mid-blue) !important;
-}
-.share:hover, .btn-share:hover {
-  background-color: var(--uoh-mid-blue) !important;
-  color: var(--uoh-white) !important;
-}
-
-/* ---- 5a. MOBILE sticky register bar (< 600px, from docs) ---------------- */
-/* Blackthorn renders the phone/tablet CTA inside this container.           */
+/* ---- 5a. MOBILE sticky register bar ------------------------------------ */
 .mobile-registration-action-container,
 .mobile-registration-action-container.ng-star-inserted {
   background-color: var(--uoh-white) !important;
@@ -208,16 +160,13 @@ input[type="submit"]:hover {
   box-shadow: 0 -2px 10px rgba(14, 22, 71, 0.08) !important;
   padding: 0.6rem 1rem calc(0.6rem + env(safe-area-inset-bottom)) 1rem !important;
 }
-.mobile-registration-action-container .btn,
-.mobile-registration-action-container button,
-.mobile-registration-action-container .get-tickets-button {
+.mobile-registration-action-container button.get-tickets-button {
   width: 100% !important;
-  min-height: 48px !important;                 /* comfortable thumb target */
+  min-height: 48px !important;
   background-color: var(--uoh-mid-blue) !important;
   color: var(--uoh-white) !important;
 }
-.mobile-registration-action-container .btn:hover,
-.mobile-registration-action-container button:hover {
+.mobile-registration-action-container button.get-tickets-button:hover {
   background-color: var(--uoh-ink-blue) !important;
 }
 
@@ -225,105 +174,119 @@ input[type="submit"]:hover {
 input[type="text"], input[type="email"], input[type="tel"],
 input[type="number"], input[type="password"],
 select, textarea,
-.form-control {                               /* VERIFY */
+.mat-input-element {
   font-family: var(--uoh-font-body) !important;
   color: var(--uoh-ink-blue) !important;
   background-color: var(--uoh-white) !important;
   border: 1.5px solid var(--uoh-ink-blue) !important;
   border-radius: var(--uoh-radius) !important;
   padding: 0.6rem 0.8rem !important;
-  font-size: 16px !important;                  /* >=16px stops iOS focus zoom */
+  font-size: 16px !important;
   box-sizing: border-box;
 }
-input:focus, select:focus, textarea:focus, .form-control:focus {
+input:focus, select:focus, textarea:focus, .mat-input-element:focus {
   outline: none !important;
   border-color: var(--uoh-mid-blue) !important;
   box-shadow: 0 0 0 3px rgba(29, 76, 242, 0.25) !important;
 }
 ::placeholder { color: var(--uoh-ink-blue-55) !important; opacity: 1; }
 
-label, .form-group label {                    /* VERIFY */
-  font-weight: 700;
+label, .mat-form-field-label {
+  font-weight: 700 !important;
   color: var(--uoh-ink-blue) !important;
-  margin-bottom: 0.25rem;
+  font-family: var(--uoh-font-body) !important;
+}
+
+/* Angular Material form field underline → replace with full border */
+.mat-form-field-appearance-legacy .mat-form-field-underline,
+.mat-form-field-underline {
+  background-color: var(--uoh-ink-blue) !important;
+}
+.mat-form-field-appearance-legacy .mat-form-field-ripple,
+.mat-form-field-ripple {
+  background-color: var(--uoh-mid-blue) !important;
 }
 
 /* ---- 7. Ticket / product / session cards -------------------------------- */
-.ticket, .ticket-card, .product, .card {      /* VERIFY (Tabbed vs Dynamic) */
+.ticket, .ticket-card, .product,
+.mat-card {
   background-color: var(--uoh-white) !important;
   border: 1.5px solid var(--uoh-ink-blue-10) !important;
   border-radius: var(--uoh-radius-lg) !important;
+  box-shadow: none !important;
 }
-.ticket:hover, .ticket-card:hover, .product:hover, .card:hover {
+.ticket:hover, .ticket-card:hover, .mat-card:hover {
   border-color: var(--uoh-mid-blue) !important;
 }
-.ticket.selected, .ticket-card.selected, .card.selected {
+.ticket.selected, .ticket-card.selected {
   background-color: var(--uoh-light-blue-10) !important;
   border-color: var(--uoh-mid-blue) !important;
   border-left: 5px solid var(--uoh-chartreuse) !important;
 }
 
-/* ---- 8. Tables (brand: blue heading rows, primary-palette tints) -------- */
+/* ---- 8. Tables ---------------------------------------------------------- */
 table { border-collapse: collapse; width: 100%; }
 thead th, table th {
   background-color: var(--uoh-ink-blue) !important;
   color: var(--uoh-white) !important;
   font-family: var(--uoh-font-body) !important;
   font-weight: 700; text-align: left;
-  border-right: 1px solid var(--uoh-white);    /* white vertical keylines */
+  border-right: 1px solid var(--uoh-white);
   padding: 0.6rem 0.8rem;
 }
 tbody td {
   color: var(--uoh-ink-blue) !important;
-  border-bottom: 1px solid var(--uoh-light-blue);  /* blue horizontal keyline */
+  border-bottom: 1px solid var(--uoh-light-blue);
   padding: 0.6rem 0.8rem;
 }
 tbody tr:nth-child(even) td { background-color: var(--uoh-light-blue-10) !important; }
 
 /* ---- 9. Misc accents ---------------------------------------------------- */
-.progress-bar, .steps .active {               /* VERIFY */
+/* Angular Material progress/stepper */
+.mat-step-header .mat-step-icon-selected,
+.mat-step-header .mat-step-icon-state-done {
   background-color: var(--uoh-mid-blue) !important;
   color: var(--uoh-white) !important;
 }
-.badge, .tag {                                /* VERIFY */
+.mat-progress-bar-fill::after {
+  background-color: var(--uoh-mid-blue) !important;
+}
+
+.badge, .tag {
   background-color: var(--uoh-chartreuse) !important;
   color: var(--uoh-ink-blue) !important;
   border-radius: 999px; font-weight: 700; padding: 0.15rem 0.7rem;
 }
 
-/* ==========================================================================
-   10. MOBILE TUNING — matches Blackthorn's own 600px breakpoint
-   ========================================================================== */
+/* Angular Material tab ink bar */
+.mat-ink-bar {
+  background-color: var(--uoh-mid-blue) !important;
+}
+.mat-tab-label-active {
+  color: var(--uoh-mid-blue) !important;
+  font-weight: 700 !important;
+}
+
+/* ---- 10. MOBILE TUNING -------------------------------------------------- */
 @media (max-width: 600px) {
 
-  h1, h1.title { font-size: 1.9rem; }
-  h2 { font-size: 1.4rem; }
+  div.event-name div.content { font-size: 1.6rem !important; }
 
-  .event-header, .page-header { padding: 1.5rem 1.25rem; border-radius: 8px; }
+  div.name-container { padding: 1.25rem !important; border-radius: 8px !important; }
 
-  /* Stack any side-by-side fields/cards into a single column */
-  .form-row,                                  /* VERIFY */
-  .ticket-row,                                /* VERIFY */
-  .row { display: block !important; }
-  .form-group, .ticket, .ticket-card, .card { width: 100% !important; }
+  .mat-card { width: 100% !important; }
 
-  /* Full-width, thumb-friendly controls */
-  .btn, button, .btn-primary, .btn-default,
-  .get-tickets-button, input[type="submit"] {
+  button.get-tickets-button,
+  .mobile-registration-action-container button.get-tickets-button {
     width: 100% !important;
     min-height: 48px !important;
     padding: 0.85rem 1.2rem !important;
   }
-  /* Keep the share button inline rather than full width */
-  .share, .btn-share { width: auto !important; }
 
-  /* Tables: let wide tables scroll instead of breaking the layout.
-     Wrap your <table> in a <div class="table-scroll"> if needed.          */
   .table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
   table th, table td { padding: 0.5rem 0.6rem; font-size: 0.9rem; }
 }
 
-/* Small refinement for very wide desktops: a touch more hero presence */
 @media (min-width: 1024px) {
-  h1, h1.title { letter-spacing: -0.015em; }
+  div.event-name div.content { letter-spacing: -0.015em !important; }
 }
